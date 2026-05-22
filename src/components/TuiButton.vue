@@ -6,24 +6,32 @@
       `tui-btn--${size}`,
       { 'tui-btn--block': block, 'tui-btn--disabled': disabled }
     ]"
-    :disabled="disabled"
-    @click="$emit('click', $event)"
+    :aria-disabled="disabled"
+    @click="handleClick"
   >
-    <span class="tui-btn__bracket">[</span>
+    <span class="tui-btn__bracket" aria-hidden="true">[</span>
     <span class="tui-btn__text"><slot /></span>
-    <span class="tui-btn__bracket">]</span>
+    <span class="tui-btn__bracket" aria-hidden="true">]</span>
   </button>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   variant: { type: String, default: 'primary', validator: v => ['primary', 'secondary', 'success'].includes(v) },
   disabled: { type: Boolean, default: false },
   block: { type: Boolean, default: false },
   size: { type: String, default: 'md', validator: v => ['sm', 'md', 'lg'].includes(v) },
 })
 
-defineEmits(['click'])
+const emit = defineEmits(['click'])
+
+function handleClick(e) {
+  if (!props.disabled) {
+    emit('click', e)
+  } else {
+    e.preventDefault()
+  }
+}
 </script>
 
 <style scoped>
@@ -70,7 +78,7 @@ defineEmits(['click'])
 .tui-btn--primary .tui-btn__bracket {
   color: rgba(255,255,255,0.7);
 }
-.tui-btn--primary:hover:not(:disabled) {
+.tui-btn--primary:hover:not(.tui-btn--disabled) {
   background: var(--red-bright);
   border-color: var(--red-bright);
 }
@@ -84,11 +92,11 @@ defineEmits(['click'])
 .tui-btn--secondary .tui-btn__bracket {
   color: var(--blue);
 }
-.tui-btn--secondary:hover:not(:disabled) {
+.tui-btn--secondary:hover:not(.tui-btn--disabled) {
   background: var(--blue);
   color: #fff;
 }
-.tui-btn--secondary:hover:not(:disabled) .tui-btn__bracket {
+.tui-btn--secondary:hover:not(.tui-btn--disabled) .tui-btn__bracket {
   color: rgba(255,255,255,0.7);
 }
 
@@ -101,11 +109,11 @@ defineEmits(['click'])
 .tui-btn--success .tui-btn__bracket {
   color: var(--green-dark);
 }
-.tui-btn--success:hover:not(:disabled) {
+.tui-btn--success:hover:not(.tui-btn--disabled) {
   background: var(--green);
   color: var(--bg);
 }
-.tui-btn--success:hover:not(:disabled) .tui-btn__bracket {
+.tui-btn--success:hover:not(.tui-btn--disabled) .tui-btn__bracket {
   color: var(--bg);
 }
 

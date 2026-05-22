@@ -1,16 +1,20 @@
 <template>
-  <div class="tui-page resultado">
+  <main class="tui-page resultado" id="main-content">
     <div class="container">
       <div class="resultado-header">
         <h1 class="resultado-title text-green">SEU CURRÍCULO ESTÁ PRONTO</h1>
         <p class="text-dim">Otimizado para sistemas ATS — pronto para ser enviado</p>
-        <div class="resultado-line text-dim">─────────────────── ◆ ───────────────────</div>
+        <div class="tui-line text-dim" aria-hidden="true">
+          <span class="tui-line-fill">{{ '─'.repeat(100) }}</span>
+          <span class="tui-line-icon">◆</span>
+          <span class="tui-line-fill">{{ '─'.repeat(100) }}</span>
+        </div>
       </div>
 
       <TuiResumePreview :data="mockResumeData" />
 
       <div class="resultado-actions">
-        <TuiButton variant="success" size="lg" @click="downloadResume">
+        <TuiButton variant="success" size="lg" @click="downloadResume" aria-label="Baixar currículo em formato PDF">
           BAIXAR CURRÍCULO (PDF)
         </TuiButton>
         <TuiButton variant="primary" size="lg" @click="$router.push('/resultado/vagas')">
@@ -20,28 +24,32 @@
 
       <div class="resultado-stats">
         <TuiBox title="ANÁLISE ATS">
-          <div class="stats-grid">
+          <dl class="stats-grid">
             <div class="stat">
-              <span class="stat-label">Score ATS:</span>
-              <span class="stat-value text-green">92/100</span>
+              <dt class="stat-label">Score ATS:</dt>
+              <dd class="stat-value text-green">92/100</dd>
             </div>
             <div class="stat">
-              <span class="stat-label">Palavras-chave:</span>
-              <span class="stat-value text-green">18 encontradas</span>
+              <dt class="stat-label">Palavras-chave:</dt>
+              <dd class="stat-value text-green">18 encontradas</dd>
             </div>
             <div class="stat">
-              <span class="stat-label">Formato:</span>
-              <span class="stat-value text-green">✓ Compatível</span>
+              <dt class="stat-label">Formato:</dt>
+              <dd class="stat-value text-green">
+                <span aria-hidden="true">✓ </span>Compatível
+              </dd>
             </div>
             <div class="stat">
-              <span class="stat-label">Seções:</span>
-              <span class="stat-value text-green">✓ Completas</span>
+              <dt class="stat-label">Seções:</dt>
+              <dd class="stat-value text-green">
+                <span aria-hidden="true">✓ </span>Completas
+              </dd>
             </div>
-          </div>
+          </dl>
         </TuiBox>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -70,10 +78,7 @@ function downloadResume() {
   margin-bottom: 8px;
 }
 
-.resultado-line {
-  margin-top: 12px;
-  opacity: 0.5;
-}
+
 
 .resultado-actions {
   display: flex;
@@ -85,13 +90,15 @@ function downloadResume() {
 
 .resultado-stats {
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px;
+  margin: 0;
 }
 
 .stat {
@@ -104,10 +111,12 @@ function downloadResume() {
   color: var(--text-dim);
   font-size: 0.8rem;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .stat-value {
   font-size: 1.05rem;
+  margin: 0;
 }
 
 @media (max-width: 768px) {

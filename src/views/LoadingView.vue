@@ -1,22 +1,28 @@
 <template>
-  <div class="tui-page loading-view">
+  <main class="tui-page loading-view" id="main-content">
     <div class="loading-center">
       <TuiSpinner
         message="Aguarde enquanto nossa IA otimiza seu currículo..."
         :submessage="currentStep"
       />
-      <div class="loading-progress">
+      <div class="loading-progress" aria-hidden="true">
         <div class="progress-bar">
           <span class="progress-fill">{{ '█'.repeat(progressBlocks) }}</span>
           <span class="progress-empty">{{ '░'.repeat(10 - progressBlocks) }}</span>
         </div>
         <span class="progress-pct">{{ progressPct }}%</span>
       </div>
-      <div class="loading-log text-dim">
+      
+      <!-- Progress for screen readers -->
+      <div class="sr-only" role="progressbar" :aria-valuenow="progressPct" aria-valuemin="0" aria-valuemax="100">
+        Progresso do processamento: {{ progressPct }}%
+      </div>
+
+      <div class="loading-log text-dim" aria-hidden="true">
         <div v-for="(log, i) in logs" :key="i">&gt; {{ log }}</div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -47,7 +53,6 @@ let progressInterval = null
 let timeout = null
 
 onMounted(() => {
-  // Cycle through steps
   stepInterval = setInterval(() => {
     if (currentStepIndex.value < steps.length - 1) {
       logs.value.push(steps[currentStepIndex.value] + ' OK')
@@ -56,14 +61,12 @@ onMounted(() => {
     }
   }, 1000)
 
-  // Progress bar
   progressInterval = setInterval(() => {
     if (progressPct.value < 100) {
       progressPct.value = Math.min(100, progressPct.value + 2)
     }
   }, 100)
 
-  // Navigate after 6s
   timeout = setTimeout(() => {
     router.push('/resultado')
   }, 6000)

@@ -1,43 +1,43 @@
 <template>
-  <div class="tui-page resultado-vagas">
+  <main class="tui-page resultado-vagas" id="main-content">
     <div class="container">
       <div class="vagas-header">
         <TuiBox title="VAGAS COMPATÍVEIS COM SEU PERFIL">
-          <p class="vagas-intro">
-            &gt; Achamos que essas vagas são as melhores para o seu currículo.<br>
-            &gt; Ordenadas por compatibilidade com seu perfil.
-          </p>
-          <div class="vagas-count">
+          <div class="vagas-intro">
+            <p><span aria-hidden="true">&gt; </span>Achamos que essas vagas são as melhores para o seu currículo.</p>
+            <p><span aria-hidden="true">&gt; </span>Ordenadas por compatibilidade com seu perfil.</p>
+          </div>
+          <div class="vagas-count" aria-live="polite">
             <span class="text-green">{{ mockJobs.length }}</span>
             <span class="text-dim"> vagas encontradas</span>
           </div>
         </TuiBox>
       </div>
 
-      <div class="vagas-grid">
-        <TuiCard
-          v-for="job in mockJobs"
-          :key="job.id"
-          :title="job.title"
-          :company="job.company"
-          :location="job.location"
-          :score="job.score"
-          :type="job.type"
-          :description="job.description"
-          :url="job.url"
-        />
+      <div class="vagas-grid" role="list" aria-label="Lista de vagas compatíveis">
+        <div role="listitem" v-for="job in mockJobs" :key="job.id">
+          <TuiCard
+            :title="job.title"
+            :company="job.company"
+            :location="job.location"
+            :score="job.score"
+            :type="job.type"
+            :description="job.description"
+            :url="job.url"
+          />
+        </div>
       </div>
 
       <div class="vagas-footer">
         <TuiButton variant="secondary" @click="$router.push('/resultado')">
-          ← VOLTAR AO CURRÍCULO
+          <span aria-hidden="true">← </span>VOLTAR AO CURRÍCULO
         </TuiButton>
         <TuiButton variant="secondary" @click="$router.push('/vagas')">
           VER TODAS AS VAGAS
         </TuiButton>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -69,9 +69,10 @@ import { mockJobs } from '../stores/mockData.js'
 
 .vagas-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
   margin-bottom: 32px;
+  width: 100%;
 }
 
 .vagas-footer {
@@ -83,7 +84,7 @@ import { mockJobs } from '../stores/mockData.js'
 
 @media (max-width: 768px) {
   .vagas-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>

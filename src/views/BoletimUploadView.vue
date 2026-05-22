@@ -1,13 +1,13 @@
 <template>
-  <div class="tui-page boletim-upload">
+  <main class="tui-page boletim-upload" id="main-content">
     <div class="container">
       <div class="upload-wrapper">
         <TuiBox title="ENVIE SEU BOLETIM ACADÊMICO">
           <div class="upload-content">
-            <p class="upload-intro">
-              &gt; Vamos analisar suas disciplinas e notas para montar<br>
-              &gt; seu currículo automaticamente com IA.
-            </p>
+            <div class="upload-intro">
+              <p><span aria-hidden="true">&gt; </span>Vamos analisar suas disciplinas e notas para montar</p>
+              <p><span aria-hidden="true">&gt; </span>seu currículo automaticamente com IA.</p>
+            </div>
 
             <div class="upload-area">
               <TuiUpload
@@ -19,9 +19,9 @@
             </div>
 
             <div class="upload-info text-dim">
-              <p>&gt; Formatos aceitos: PDF, JPG, PNG</p>
-              <p>&gt; O boletim será processado pelo nosso agente de IA</p>
-              <p>&gt; Nenhum dado é compartilhado com terceiros</p>
+              <p><span aria-hidden="true">&gt; </span>Formatos aceitos: PDF, JPG, PNG</p>
+              <p><span aria-hidden="true">&gt; </span>O boletim será processado pelo nosso agente de IA</p>
+              <p><span aria-hidden="true">&gt; </span>Nenhum dado é compartilhado com terceiros</p>
             </div>
 
             <div class="upload-action">
@@ -39,7 +39,7 @@
         </TuiBox>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -64,6 +64,7 @@ function processUpload() {
 <style scoped>
 .upload-wrapper {
   max-width: 580px;
+  width: 100%;
   margin: 30px auto 0;
 }
 

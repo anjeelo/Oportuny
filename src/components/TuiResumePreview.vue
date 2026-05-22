@@ -1,60 +1,78 @@
 <template>
   <div class="resume-preview">
     <TuiBox title="CURRÍCULO GERADO" variant="highlight">
+      
       <!-- Personal Info -->
-      <div class="section">
-        <div class="section-header">══ DADOS PESSOAIS ══</div>
+      <section class="section" aria-labelledby="resume-personal">
+        <h3 id="resume-personal" class="section-header">
+          <span aria-hidden="true">══ </span>DADOS PESSOAIS<span aria-hidden="true"> ══</span>
+        </h3>
         <div class="field"><span class="field-label">Nome:</span> {{ data.name }}</div>
         <div class="field"><span class="field-label">Email:</span> {{ data.email }}</div>
         <div class="field" v-if="data.phone"><span class="field-label">Tel:</span> {{ data.phone }}</div>
         <div class="field" v-if="data.city"><span class="field-label">Cidade:</span> {{ data.city }}</div>
-      </div>
+      </section>
 
       <!-- Summary -->
-      <div class="section" v-if="data.summary">
-        <div class="section-header">══ RESUMO PROFISSIONAL ══</div>
+      <section class="section" v-if="data.summary" aria-labelledby="resume-summary">
+        <h3 id="resume-summary" class="section-header">
+          <span aria-hidden="true">══ </span>RESUMO PROFISSIONAL<span aria-hidden="true"> ══</span>
+        </h3>
         <div class="section-text">{{ data.summary }}</div>
-      </div>
+      </section>
 
       <!-- Education -->
-      <div class="section" v-if="data.education?.length">
-        <div class="section-header">══ EDUCAÇÃO ══</div>
+      <section class="section" v-if="data.education?.length" aria-labelledby="resume-edu">
+        <h3 id="resume-edu" class="section-header">
+          <span aria-hidden="true">══ </span>EDUCAÇÃO<span aria-hidden="true"> ══</span>
+        </h3>
         <div class="item" v-for="(edu, i) in data.education" :key="i">
-          <div class="item-marker">&gt; {{ edu.degree }}</div>
+          <div class="item-marker"><span aria-hidden="true">&gt; </span>{{ edu.degree }}</div>
           <div class="item-sub">  {{ edu.institution }} ({{ edu.period }})</div>
           <div class="item-sub" v-if="edu.gpa">  Média: {{ edu.gpa }}</div>
         </div>
-      </div>
+      </section>
 
       <!-- Skills -->
-      <div class="section" v-if="data.skills?.length">
-        <div class="section-header">══ HABILIDADES ══</div>
-        <div class="skills-list">
-          <span class="skill-tag" v-for="(skill, i) in data.skills" :key="i">[{{ skill }}]</span>
+      <section class="section" v-if="data.skills?.length" aria-labelledby="resume-skills">
+        <h3 id="resume-skills" class="section-header">
+          <span aria-hidden="true">══ </span>HABILIDADES<span aria-hidden="true"> ══</span>
+        </h3>
+        <div class="skills-list" role="list">
+          <span class="skill-tag" v-for="(skill, i) in data.skills" :key="i" role="listitem">
+            <span aria-hidden="true">[</span>{{ skill }}<span aria-hidden="true">]</span>
+          </span>
         </div>
-      </div>
+      </section>
 
       <!-- Projects -->
-      <div class="section" v-if="data.projects?.length">
-        <div class="section-header">══ PROJETOS ══</div>
+      <section class="section" v-if="data.projects?.length" aria-labelledby="resume-projects">
+        <h3 id="resume-projects" class="section-header">
+          <span aria-hidden="true">══ </span>PROJETOS<span aria-hidden="true"> ══</span>
+        </h3>
         <div class="item" v-for="(proj, i) in data.projects" :key="i">
-          <div class="item-marker">&gt; {{ proj.name }}</div>
+          <div class="item-marker"><span aria-hidden="true">&gt; </span>{{ proj.name }}</div>
           <div class="item-sub">  {{ proj.description }}</div>
           <div class="item-tech">  Stack: {{ proj.tech }}</div>
         </div>
-      </div>
+      </section>
 
       <!-- Disciplines -->
-      <div class="section" v-if="data.disciplines?.length">
-        <div class="section-header">══ DISCIPLINAS RELEVANTES ══</div>
-        <div class="disciplines-grid">
-          <div class="discipline" v-for="(disc, i) in data.disciplines" :key="i">
+      <section class="section" v-if="data.disciplines?.length" aria-labelledby="resume-disc">
+        <h3 id="resume-disc" class="section-header">
+          <span aria-hidden="true">══ </span>DISCIPLINAS RELEVANTES<span aria-hidden="true"> ══</span>
+        </h3>
+        <ul class="disciplines-grid">
+          <li class="discipline" v-for="(disc, i) in data.disciplines" :key="i">
             <span class="disc-name">{{ disc.name }}</span>
-            <span class="disc-dots">{{ '.'.repeat(Math.max(2, 30 - disc.name.length)) }}</span>
-            <span class="disc-grade" :class="gradeClass(disc.grade)">{{ disc.grade.toFixed(1) }}</span>
-          </div>
-        </div>
-      </div>
+            <span class="disc-dots" aria-hidden="true">{{ '.'.repeat(Math.max(2, 30 - disc.name.length)) }}</span>
+            <span class="disc-grade" :class="gradeClass(disc.grade)">
+              <span class="sr-only">Nota </span>{{ disc.grade.toFixed(1) }}
+            </span>
+          </li>
+        </ul>
+      </section>
+      
     </TuiBox>
   </div>
 </template>
@@ -146,17 +164,23 @@ function gradeClass(grade) {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .discipline {
   display: flex;
   align-items: baseline;
   font-size: 0.9rem;
+  width: 100%;
 }
 
 .disc-name {
   color: var(--text);
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .disc-dots {

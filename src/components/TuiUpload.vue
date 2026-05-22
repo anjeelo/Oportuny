@@ -9,7 +9,8 @@
     role="button"
     :aria-label="label || 'Upload de arquivo'"
     tabindex="0"
-    @keydown.enter="triggerInput"
+    @keydown.enter.prevent="triggerInput"
+    @keydown.space.prevent="triggerInput"
   >
     <input
       ref="fileInput"
@@ -17,27 +18,32 @@
       :accept="accept"
       class="tui-upload__input"
       @change="handleFileChange"
-      aria-hidden="true"
+      tabindex="-1"
     />
 
+    <!-- aria-live region to announce changes to screen readers -->
+    <div class="sr-only" aria-live="polite" aria-atomic="true">
+      {{ srMessage }}
+    </div>
+
     <template v-if="!selectedFile">
-      <div class="tui-upload__icon">
+      <div class="tui-upload__icon" aria-hidden="true">
         <div>┌──────┐</div>
         <div>│ FILE │</div>
         <div>│  ↑   │</div>
         <div>└──────┘</div>
       </div>
-      <div class="tui-upload__label">{{ label || 'Arraste seu arquivo aqui' }}</div>
-      <div class="tui-upload__hint">ou clique para selecionar</div>
-      <div class="tui-upload__formats">Formatos: {{ accept || '*' }}</div>
-      <div class="tui-upload__maxsize">Tamanho máximo: {{ maxSize }}MB</div>
+      <div class="tui-upload__label" aria-hidden="true">{{ label || 'Arraste seu arquivo aqui' }}</div>
+      <div class="tui-upload__hint" aria-hidden="true">ou clique para selecionar</div>
+      <div class="tui-upload__formats" aria-hidden="true">Formatos: {{ accept || '*' }}</div>
+      <div class="tui-upload__maxsize" aria-hidden="true">Tamanho máximo: {{ maxSize }}MB</div>
     </template>
 
     <template v-else>
-      <div class="tui-upload__done-icon">✓</div>
-      <div class="tui-upload__filename">{{ selectedFile.name }}</div>
-      <div class="tui-upload__filesize">{{ formatSize(selectedFile.size) }}</div>
-      <div class="tui-upload__change">Clique para trocar o arquivo</div>
+      <div class="tui-upload__done-icon" aria-hidden="true">✓</div>
+      <div class="tui-upload__filename" aria-hidden="true">{{ selectedFile.name }}</div>
+      <div class="tui-upload__filesize" aria-hidden="true">{{ formatSize(selectedFile.size) }}</div>
+      <div class="tui-upload__change" aria-hidden="true">Clique para trocar o arquivo</div>
     </template>
   </div>
 </template>
@@ -56,6 +62,7 @@ const emit = defineEmits(['file-selected'])
 const fileInput = ref(null)
 const isDragging = ref(false)
 const selectedFile = ref(null)
+const srMessage = ref('')
 
 function triggerInput() {
   fileInput.value?.click()
@@ -74,10 +81,13 @@ function handleDrop(e) {
 
 function processFile(file) {
   if (file.size > props.maxSize * 1024 * 1024) {
-    alert(`Arquivo muito grande. Máximo: ${props.maxSize}MB`)
+    const errorMsg = `Erro: Arquivo muito grande. Máximo: ${props.maxSize}MB`
+    srMessage.value = errorMsg
+    alert(errorMsg)
     return
   }
   selectedFile.value = file
+  srMessage.value = `Arquivo selecionado: ${file.name}, tamanho ${formatSize(file.size)}.`
   emit('file-selected', file)
 }
 
@@ -115,7 +125,15 @@ function formatSize(bytes) {
 }
 
 .tui-upload__input {
-  display: none;
+  /* Using opacity 0 instead of display none ensures focus is somewhat manageable, though we manually trigger it */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .tui-upload__icon {
@@ -168,10 +186,5 @@ function formatSize(bytes) {
   color: var(--text-dim);
   font-size: 0.8rem;
   opacity: 0.7;
-}
-
-.tui-upload:focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 2px;
 }
 </style>

@@ -1,8 +1,9 @@
 <template>
-  <div class="tui-spinner">
-    <div class="spinner-char">{{ spinnerChars[currentFrame] }}</div>
+  <div class="tui-spinner" role="status" aria-live="polite">
+    <div class="spinner-char" aria-hidden="true">{{ spinnerChars[currentFrame] }}</div>
     <div class="spinner-message">{{ message }}</div>
     <div class="spinner-submessage" v-if="submessage">{{ submessage }}</div>
+    <span class="sr-only">Carregando...</span>
   </div>
 </template>
 

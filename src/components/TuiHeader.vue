@@ -1,29 +1,67 @@
 <template>
   <header class="tui-header">
-    <div class="header-border-top">┌{{ '─'.repeat(200) }}┐</div>
-    <nav class="header-content">
-      <router-link to="/onboarding" class="header-logo" aria-label="Oportuni Home">
-        OPORTUNI
-      </router-link>
-      <div class="header-nav" :class="{ open: menuOpen }">
-        <span class="separator">│</span>
-        <router-link to="/onboarding" class="nav-link" @click="menuOpen = false">HOME</router-link>
-        <span class="separator">│</span>
-        <router-link to="/vagas" class="nav-link" @click="menuOpen = false">VAGAS</router-link>
-        <span class="separator">│</span>
-        <router-link to="/login" class="nav-link" @click="menuOpen = false">LOGIN</router-link>
+    <div class="container">
+      <div class="header-border-top" aria-hidden="true">
+        <span class="corner">┌</span>
+        <span class="fill">{{ '─'.repeat(200) }}</span>
+        <span class="corner">┐</span>
       </div>
-      <button class="mobile-toggle" @click="menuOpen = !menuOpen" aria-label="Menu">
-        {{ menuOpen ? '✕' : '≡' }}
-      </button>
-    </nav>
-    <div class="header-border-bottom">└{{ '─'.repeat(200) }}┘</div>
+      
+      <nav class="header-content" aria-label="Navegação principal">
+        <router-link to="/onboarding" class="header-logo" aria-label="Oportuni Home">
+          OPORTUNI
+        </router-link>
+        
+        <div class="header-nav" :class="{ open: menuOpen }" id="main-nav">
+          <span class="separator" aria-hidden="true">│</span>
+          <router-link to="/onboarding" class="nav-link" @click="menuOpen = false">HOME</router-link>
+          <span class="separator" aria-hidden="true">│</span>
+          <router-link to="/vagas" class="nav-link" @click="menuOpen = false">VAGAS</router-link>
+          <span class="separator" aria-hidden="true">│</span>
+          
+          <template v-if="!isAuthenticated">
+            <router-link to="/login" class="nav-link" @click="menuOpen = false">LOGIN</router-link>
+          </template>
+          <template v-else>
+            <router-link to="/questionario" class="nav-link" @click="menuOpen = false">MEU CV</router-link>
+            <span class="separator" aria-hidden="true">│</span>
+            <button class="nav-link btn-logout" @click="handleLogout">SAIR</button>
+          </template>
+        </div>
+        
+        <button 
+          class="mobile-toggle" 
+          @click="menuOpen = !menuOpen" 
+          :aria-expanded="menuOpen"
+          aria-controls="main-nav"
+          aria-label="Alternar menu de navegação"
+        >
+          <span aria-hidden="true">{{ menuOpen ? '✕' : '≡' }}</span>
+        </button>
+      </nav>
+
+      <div class="header-border-bottom" aria-hidden="true">
+        <span class="corner">└</span>
+        <span class="fill">{{ '─'.repeat(200) }}</span>
+        <span class="corner">┘</span>
+      </div>
+    </div>
   </header>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { isAuthenticated, logoutMock } from '../stores/auth'
+
+const router = useRouter()
 const menuOpen = ref(false)
+
+function handleLogout() {
+  logoutMock()
+  menuOpen.value = false
+  router.push('/login')
+}
 </script>
 
 <style scoped>
@@ -39,20 +77,37 @@ const menuOpen = ref(false)
 
 .header-border-top,
 .header-border-bottom {
+  display: flex;
+  align-items: center;
   color: var(--border);
   font-size: 0.75rem;
   line-height: 1;
-  overflow: hidden;
-  white-space: nowrap;
   height: 12px;
   user-select: none;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.corner {
+  flex-shrink: 0;
+}
+
+.fill {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  justify-content: center;
   height: 44px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .header-logo {
@@ -85,9 +140,14 @@ const menuOpen = ref(false)
   text-decoration: none;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
-  padding: 4px 0;
-  transition: color 0.15s;
+  padding: 4px 6px;
+  transition: color 0.15s, background-color 0.15s;
   position: relative;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .nav-link:hover {
@@ -98,6 +158,13 @@ const menuOpen = ref(false)
 .nav-link.router-link-active,
 .nav-link.router-link-exact-active {
   color: var(--green);
+}
+
+.btn-logout {
+  color: var(--red);
+}
+.btn-logout:hover {
+  color: var(--red-bright);
 }
 
 .mobile-toggle {
@@ -111,12 +178,20 @@ const menuOpen = ref(false)
   padding: 2px 8px;
   margin-left: auto;
   line-height: 1;
+  transition: border-color 0.15s;
+}
+
+.mobile-toggle:focus-visible {
+  border-color: var(--green);
 }
 
 @media (max-width: 768px) {
   .header-content {
-    padding: 0 12px;
+    justify-content: space-between;
     flex-wrap: wrap;
+    height: auto;
+    min-height: 44px;
+    padding: 4px 0;
   }
   .mobile-toggle {
     display: block;
@@ -128,7 +203,7 @@ const menuOpen = ref(false)
     align-items: flex-start;
     padding: 8px 0;
     border-top: 1px solid var(--border);
-    margin-top: 8px;
+    background: var(--bg);
   }
   .header-nav.open {
     display: flex;
@@ -137,8 +212,9 @@ const menuOpen = ref(false)
     display: none;
   }
   .nav-link {
-    padding: 6px 0;
+    padding: 8px 12px;
     width: 100%;
+    text-align: left;
   }
 }
 </style>

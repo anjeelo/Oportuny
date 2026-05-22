@@ -1,39 +1,54 @@
 <template>
-  <div class="tui-box" :class="[`tui-box--${variant}`]">
-    <div class="tui-box__top">
+  <section 
+    class="tui-box" 
+    :class="[`tui-box--${variant}`]"
+    :aria-labelledby="title ? boxId : null"
+  >
+    <div class="tui-box__top" aria-hidden="true">
       <span class="tui-box__corner">┌</span>
       <span class="tui-box__line" v-if="title">─ </span>
-      <span class="tui-box__title" v-if="title">{{ title }}</span>
+      <span class="tui-box__title" v-if="title" :id="boxId">{{ title }}</span>
       <span class="tui-box__line" v-if="title"> ─</span>
-      <span class="tui-box__fill">{{ '─'.repeat(80) }}</span>
+      <span class="tui-box__fill">{{ '─'.repeat(200) }}</span>
       <span class="tui-box__corner">┐</span>
     </div>
+    
+    <!-- Para leitores de tela lerem o título caso o top esteja escondido -->
+    <h2 v-if="title" :id="boxId" class="sr-only">{{ title }}</h2>
+
     <div class="tui-box__body" :class="{ 'tui-box__body--padded': padded }">
-      <span class="tui-box__side">│</span>
+      <span class="tui-box__side" aria-hidden="true">│</span>
       <div class="tui-box__content">
         <slot />
       </div>
-      <span class="tui-box__side">│</span>
+      <span class="tui-box__side" aria-hidden="true">│</span>
     </div>
-    <div class="tui-box__bottom">
+
+    <div class="tui-box__bottom" aria-hidden="true">
       <span class="tui-box__corner">└</span>
-      <span class="tui-box__fill">{{ '─'.repeat(80) }}</span>
+      <span class="tui-box__fill">{{ '─'.repeat(200) }}</span>
       <span class="tui-box__corner">┘</span>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   title: { type: String, default: '' },
   variant: { type: String, default: 'default', validator: v => ['default', 'highlight', 'danger'].includes(v) },
   padded: { type: Boolean, default: true }
 })
+
+const boxId = computed(() => 'box-' + Math.random().toString(36).substr(2, 9))
 </script>
 
 <style scoped>
 .tui-box {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   font-family: var(--font-mono);
 }
 
@@ -45,6 +60,9 @@ defineProps({
   white-space: nowrap;
   line-height: 1;
   height: 1.2em;
+  user-select: none;
+  width: 100%;
+  max-width: 100%;
 }
 
 .tui-box__corner {
@@ -67,11 +85,14 @@ defineProps({
 .tui-box__fill {
   overflow: hidden;
   flex: 1;
+  min-width: 0;
 }
 
 .tui-box__body {
   display: flex;
   min-height: 40px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .tui-box__body--padded .tui-box__content {
@@ -83,6 +104,7 @@ defineProps({
   display: flex;
   align-items: stretch;
   line-height: 1;
+  user-select: none;
 }
 
 .tui-box__content {
@@ -116,5 +138,11 @@ defineProps({
 }
 .tui-box--danger .tui-box__title {
   color: var(--red-bright);
+}
+
+@media (max-width: 480px) {
+  .tui-box__body--padded .tui-box__content {
+    padding: 12px;
+  }
 }
 </style>

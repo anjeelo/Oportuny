@@ -1,55 +1,61 @@
 <template>
-  <div class="tui-page vagas-public">
+  <main class="tui-page vagas-public" id="main-content">
     <div class="container">
       <div class="vagas-header">
         <h1 class="vagas-title">VAGAS DISPONÍVEIS</h1>
-        <p class="text-dim">&gt; Oportunidades para universitários e recém-formados</p>
+        <p class="text-dim">
+          <span aria-hidden="true">&gt; </span>Oportunidades para universitários e recém-formados
+        </p>
       </div>
 
       <!-- Category filters -->
-      <div class="filter-bar">
+      <nav class="filter-bar" aria-label="Filtrar vagas por categoria">
         <button
           v-for="cat in categories"
           :key="cat"
           class="filter-btn"
           :class="{ active: activeCategory === cat }"
+          :aria-pressed="activeCategory === cat"
           @click="activeCategory = cat"
         >
-          [{{ cat }}]
+          <span aria-hidden="true">[</span>{{ cat }}<span aria-hidden="true">]</span>
         </button>
-      </div>
+      </nav>
 
       <!-- Jobs grid -->
-      <div class="vagas-grid">
-        <TuiCard
-          v-for="job in filteredJobs"
-          :key="job.id"
-          :title="job.title"
-          :company="job.company"
-          :location="job.location"
-          :type="job.type"
-          :description="job.description"
-          :url="job.url"
-        />
+      <div class="vagas-grid" role="list" aria-label="Lista de vagas disponíveis">
+        <div role="listitem" v-for="job in filteredJobs" :key="job.id">
+          <TuiCard
+            :title="job.title"
+            :company="job.company"
+            :location="job.location"
+            :type="job.type"
+            :description="job.description"
+            :url="job.url"
+          />
+        </div>
       </div>
 
-      <div class="vagas-empty" v-if="filteredJobs.length === 0">
+      <div class="vagas-empty" v-if="filteredJobs.length === 0" aria-live="polite">
         <TuiBox>
-          <p class="text-dim text-center">&gt; Nenhuma vaga encontrada nesta categoria.</p>
+          <p class="text-dim text-center">
+            <span aria-hidden="true">&gt; </span>Nenhuma vaga encontrada nesta categoria.
+          </p>
         </TuiBox>
       </div>
 
       <!-- CTA -->
-      <div class="vagas-cta">
+      <section class="vagas-cta" aria-labelledby="cta-title">
+        <h2 id="cta-title" class="sr-only">Gerar seu currículo</h2>
         <div class="cta-text text-dim">
-          &gt; Quer ver vagas compatíveis com seu perfil?
+          <span aria-hidden="true">&gt; </span>Quer ver vagas compatíveis com seu perfil?
         </div>
         <TuiButton variant="primary" @click="$router.push('/questionario')">
           GERAR MEU CURRÍCULO
         </TuiButton>
-      </div>
+      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -104,6 +110,11 @@ const filteredJobs = computed(() => {
   letter-spacing: 0.05em;
 }
 
+.filter-btn:focus-visible {
+  outline: 2px dashed var(--green);
+  outline-offset: 2px;
+}
+
 .filter-btn:hover {
   color: var(--blue-bright);
   border-color: var(--blue-bright);
@@ -118,9 +129,10 @@ const filteredJobs = computed(() => {
 /* Grid */
 .vagas-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
   margin-bottom: 32px;
+  width: 100%;
 }
 
 /* CTA */
@@ -135,7 +147,7 @@ const filteredJobs = computed(() => {
 
 @media (max-width: 768px) {
   .vagas-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .filter-bar {
     gap: 4px;

@@ -1,17 +1,25 @@
 <template>
-  <div class="tui-card">
-    <div class="card-top">┌{{ '─'.repeat(60) }}┐</div>
+  <article class="tui-card" :aria-labelledby="cardId">
+    <div class="card-top" aria-hidden="true">
+      <span class="card-corner">┌</span>
+      <span class="card-fill">{{ '─'.repeat(200) }}</span>
+      <span class="card-corner">┐</span>
+    </div>
     <div class="card-body">
-      <div class="card-side">│</div>
+      <div class="card-side" aria-hidden="true">│</div>
       <div class="card-content">
-        <div class="card-title">{{ title }}</div>
+        <h3 class="card-title" :id="cardId">{{ title }}</h3>
         <div class="card-meta">
           <span class="card-company">{{ company }}</span>
-          <span class="card-dot"> • </span>
+          <span class="card-dot" aria-hidden="true"> • </span>
           <span class="card-location">{{ location }}</span>
         </div>
 
-        <div class="card-divider">├{{ '─'.repeat(60) }}┤</div>
+        <div class="card-divider" aria-hidden="true">
+          <span class="card-corner">├</span>
+          <span class="card-fill">{{ '─'.repeat(200) }}</span>
+          <span class="card-corner">┤</span>
+        </div>
 
         <div class="card-details">
           <div class="card-type" v-if="type">
@@ -19,7 +27,8 @@
           </div>
           <div class="card-score" v-if="score !== undefined && score !== null">
             <span class="label">Compatibilidade:</span>
-            <span class="score-bar">
+            
+            <span class="score-bar" aria-hidden="true">
               <span class="score-filled">{{ '█'.repeat(Math.round(score / 10)) }}</span>
               <span class="score-empty">{{ '░'.repeat(10 - Math.round(score / 10)) }}</span>
             </span>
@@ -30,18 +39,23 @@
         <div class="card-description" v-if="description">{{ description }}</div>
 
         <div class="card-actions">
-          <TuiButton variant="primary" size="sm" @click="handleApply">
+          <TuiButton variant="primary" size="sm" @click="handleApply" :aria-label="`Candidatar-se para ${title} na ${company}`">
             CANDIDATAR-SE
           </TuiButton>
         </div>
       </div>
-      <div class="card-side">│</div>
+      <div class="card-side" aria-hidden="true">│</div>
     </div>
-    <div class="card-bottom">└{{ '─'.repeat(60) }}┘</div>
-  </div>
+    <div class="card-bottom" aria-hidden="true">
+      <span class="card-corner">└</span>
+      <span class="card-fill">{{ '─'.repeat(200) }}</span>
+      <span class="card-corner">┘</span>
+    </div>
+  </article>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import TuiButton from './TuiButton.vue'
 
 const props = defineProps({
@@ -53,6 +67,8 @@ const props = defineProps({
   description: { type: String, default: '' },
   url: { type: String, default: '#' },
 })
+
+const cardId = computed(() => 'card-' + Math.random().toString(36).substr(2, 9))
 
 function handleApply() {
   if (props.url && props.url !== '#') {
@@ -67,18 +83,37 @@ function handleApply() {
 .tui-card {
   font-family: var(--font-mono);
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .card-top, .card-bottom, .card-divider {
+  display: flex;
+  align-items: center;
   color: var(--border);
   overflow: hidden;
   white-space: nowrap;
   line-height: 1.2;
   font-size: 0.95rem;
+  user-select: none;
+  width: 100%;
+  max-width: 100%;
+}
+
+.card-corner {
+  flex-shrink: 0;
+}
+
+.card-fill {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .card-body {
   display: flex;
+  width: 100%;
+  max-width: 100%;
 }
 
 .card-side {
@@ -88,6 +123,7 @@ function handleApply() {
   display: flex;
   align-items: stretch;
   font-size: 0.95rem;
+  user-select: none;
 }
 
 .card-content {
