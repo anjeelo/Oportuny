@@ -50,6 +50,8 @@ const boxId = computed(() => 'box-' + Math.random().toString(36).substr(2, 9))
   max-width: 100%;
   box-sizing: border-box;
   font-family: var(--font-mono);
+  border-radius: var(--radius-md);
+  animation: fadeIn var(--duration-slow) var(--ease-out) both;
 }
 
 .tui-box__top,
@@ -76,10 +78,12 @@ const boxId = computed(() => 'box-' + Math.random().toString(36).substr(2, 9))
 
 .tui-box__title {
   flex-shrink: 0;
-  color: var(--text-bright);
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--text-bright);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--sp-sm);
 }
 
 .tui-box__fill {
@@ -93,10 +97,11 @@ const boxId = computed(() => 'box-' + Math.random().toString(36).substr(2, 9))
   min-height: 40px;
   width: 100%;
   max-width: 100%;
+  background-color: var(--bg-elevated);
 }
 
 .tui-box__body--padded .tui-box__content {
-  padding: 16px 20px;
+  padding: 20px 24px;
 }
 
 .tui-box__side {
@@ -112,37 +117,47 @@ const boxId = computed(() => 'box-' + Math.random().toString(36).substr(2, 9))
   min-width: 0;
 }
 
-/* Variant colors */
+/* ── Default variant ── */
 .tui-box--default .tui-box__corner,
 .tui-box--default .tui-box__fill,
 .tui-box--default .tui-box__line,
 .tui-box--default .tui-box__side {
-  color: var(--border);
+  color: var(--text-muted);
+  opacity: 0.5;
 }
 
+/* ── Highlight variant ── */
 .tui-box--highlight .tui-box__corner,
 .tui-box--highlight .tui-box__fill,
 .tui-box--highlight .tui-box__line,
 .tui-box--highlight .tui-box__side {
-  color: var(--green);
+  color: var(--accent-muted);
 }
 .tui-box--highlight .tui-box__title {
-  color: var(--green-bright);
+  color: var(--accent-light);
+  border-left-color: var(--accent-light);
 }
 
+/* ── Danger variant ── */
 .tui-box--danger .tui-box__corner,
 .tui-box--danger .tui-box__fill,
 .tui-box--danger .tui-box__line,
 .tui-box--danger .tui-box__side {
-  color: var(--red);
+  color: var(--primary-muted);
 }
 .tui-box--danger .tui-box__title {
-  color: var(--red-bright);
+  color: var(--danger-light);
+  border-left-color: var(--danger-light);
 }
 
 @media (max-width: 480px) {
   .tui-box__body--padded .tui-box__content {
-    padding: 12px;
+    padding: 14px 16px;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>

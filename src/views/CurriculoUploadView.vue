@@ -1,7 +1,24 @@
 <template>
   <main class="tui-page curriculo-upload" id="main-content">
     <div class="container">
-      <div class="upload-wrapper">
+      <div class="upload-wrapper animate-fade-in-up">
+        <div class="step-indicator" aria-label="Progresso: Etapa 1 de 3">
+          <div class="step active">
+            <span class="step-num">1</span>
+            <span class="step-label">Upload</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <span class="step-label">Processamento</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <span class="step-label">Resultado</span>
+          </div>
+        </div>
+
         <TuiBox title="ENVIE SEU CURRÍCULO ATUAL">
           <div class="upload-content">
             <div class="upload-intro">
@@ -40,7 +57,7 @@
                 />
               </div>
 
-              <div class="upload-info text-dim">
+              <div class="upload-info">
                 <p><span aria-hidden="true">&gt; </span>Formatos aceitos: PDF, DOCX</p>
                 <p><span aria-hidden="true">&gt; </span>Seu currículo será parseado e otimizado por IA</p>
               </div>
@@ -93,19 +110,77 @@ function processUpload() {
 
 <style scoped>
 .upload-wrapper {
-  max-width: 580px;
+  max-width: 620px;
   width: 100%;
-  margin: 30px auto 0;
+  margin: var(--sp-lg) auto 0;
 }
 
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--sp-lg);
+  padding: 0 var(--sp-sm);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.step.active .step-num {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.step.active .step-label {
+  color: var(--accent);
+}
+
+.step-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 var(--sp-sm);
+  margin-bottom: var(--sp-lg);
+}
+
+/* Upload Content */
 .upload-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .upload-intro {
-  color: var(--text);
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.8;
 }
@@ -113,19 +188,37 @@ function processUpload() {
 .form-fields {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .upload-area {
-  margin: 4px 0;
+  margin: var(--sp-xs) 0;
 }
 
 .upload-info {
   font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-body);
   line-height: 1.8;
 }
 
 .upload-action {
-  margin-top: 4px;
+  margin-top: var(--sp-xs);
+}
+
+/* Animation */
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-normal, 0.4s) var(--ease-out, ease-out) both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

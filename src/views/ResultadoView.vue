@@ -1,19 +1,24 @@
 <template>
   <main class="tui-page resultado" id="main-content">
     <div class="container">
-      <div class="resultado-header">
-        <h1 class="resultado-title text-green">SEU CURRÍCULO ESTÁ PRONTO</h1>
-        <p class="text-dim">Otimizado para sistemas ATS — pronto para ser enviado</p>
-        <div class="tui-line text-dim" aria-hidden="true">
+      <div class="resultado-header animate-fade-in-up">
+        <div class="success-badge" aria-hidden="true">
+          <span class="badge-icon">✓</span>
+        </div>
+        <h1 class="resultado-title">SEU CURRÍCULO ESTÁ PRONTO</h1>
+        <p class="resultado-subtitle">Otimizado para sistemas ATS — pronto para ser enviado</p>
+        <div class="tui-line" aria-hidden="true">
           <span class="tui-line-fill">{{ '─'.repeat(100) }}</span>
           <span class="tui-line-icon">◆</span>
           <span class="tui-line-fill">{{ '─'.repeat(100) }}</span>
         </div>
       </div>
 
-      <TuiResumePreview :data="mockResumeData" />
+      <div class="animate-fade-in-up">
+        <TuiResumePreview :data="mockResumeData" />
+      </div>
 
-      <div class="resultado-actions">
+      <div class="resultado-actions animate-fade-in-up">
         <TuiButton variant="success" size="lg" @click="downloadResume" aria-label="Baixar currículo em formato PDF">
           BAIXAR CURRÍCULO (PDF)
         </TuiButton>
@@ -22,26 +27,26 @@
         </TuiButton>
       </div>
 
-      <div class="resultado-stats">
+      <div class="resultado-stats animate-fade-in-up">
         <TuiBox title="ANÁLISE ATS">
           <dl class="stats-grid">
-            <div class="stat">
-              <dt class="stat-label">Score ATS:</dt>
-              <dd class="stat-value text-green">92/100</dd>
+            <div class="stat-card">
+              <dt class="stat-label">Score ATS</dt>
+              <dd class="stat-value">92/100</dd>
             </div>
-            <div class="stat">
-              <dt class="stat-label">Palavras-chave:</dt>
-              <dd class="stat-value text-green">18 encontradas</dd>
+            <div class="stat-card">
+              <dt class="stat-label">Palavras-chave</dt>
+              <dd class="stat-value">18 encontradas</dd>
             </div>
-            <div class="stat">
-              <dt class="stat-label">Formato:</dt>
-              <dd class="stat-value text-green">
+            <div class="stat-card">
+              <dt class="stat-label">Formato</dt>
+              <dd class="stat-value">
                 <span aria-hidden="true">✓ </span>Compatível
               </dd>
             </div>
-            <div class="stat">
-              <dt class="stat-label">Seções:</dt>
-              <dd class="stat-value text-green">
+            <div class="stat-card">
+              <dt class="stat-label">Seções</dt>
+              <dd class="stat-value">
                 <span aria-hidden="true">✓ </span>Completas
               </dd>
             </div>
@@ -68,55 +73,147 @@ function downloadResume() {
   padding-bottom: 60px;
 }
 
+/* Header */
 .resultado-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: var(--sp-xl);
+}
+
+.success-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--sp-md);
+}
+
+.badge-icon {
+  line-height: 1;
 }
 
 .resultado-title {
-  font-size: 1.8rem;
-  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  color: var(--accent-light);
+  margin-bottom: 6px;
 }
 
+.resultado-subtitle {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--sp-md);
+}
 
+.tui-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  color: var(--text-muted);
+  overflow: hidden;
+}
 
+.tui-line-fill {
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.tui-line-icon {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* Actions */
 .resultado-actions {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   justify-content: center;
-  margin: 32px 0;
+  margin: var(--sp-xl) 0;
   flex-wrap: wrap;
 }
 
+/* Stats */
 .resultado-stats {
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
   margin: 0 auto;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-md);
   margin: 0;
 }
 
-.stat {
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-md);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sp-xs);
 }
 
 .stat-label {
-  color: var(--text-dim);
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
   margin: 0;
 }
 
 .stat-value {
-  font-size: 1.05rem;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--accent);
   margin: 0;
+}
+
+/* Animations */
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-normal, 0.4s) var(--ease-out, ease-out) both;
+}
+
+.resultado-header.animate-fade-in-up {
+  animation-delay: 0s;
+}
+
+.resultado-actions.animate-fade-in-up {
+  animation-delay: 0.1s;
+}
+
+.resultado-stats.animate-fade-in-up {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -124,6 +221,13 @@ function downloadResume() {
     flex-direction: column;
     align-items: stretch;
   }
+
+  .resultado-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }

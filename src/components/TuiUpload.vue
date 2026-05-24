@@ -100,32 +100,36 @@ function formatSize(bytes) {
 
 <style scoped>
 .tui-upload {
-  border: 2px dashed var(--border);
-  padding: 32px 24px;
+  background: var(--bg-surface);
+  border: 2px dashed var(--border-active);
+  border-radius: var(--radius-md);
+  padding: 40px 28px;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.15s, background-color 0.15s;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
   font-family: var(--font-mono);
   user-select: none;
 }
 
 .tui-upload:hover {
-  border-color: var(--blue-bright);
-  background: rgba(36, 110, 130, 0.05);
+  border-color: var(--info);
+  background: var(--info-bg);
 }
 
 .tui-upload--active {
-  border-color: var(--green) !important;
-  background: rgba(181, 221, 164, 0.05) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent-bg) !important;
 }
 
 .tui-upload--done {
-  border-color: var(--green);
+  border-color: var(--accent);
   border-style: solid;
+  background: var(--accent-bg);
 }
 
 .tui-upload__input {
-  /* Using opacity 0 instead of display none ensures focus is somewhat manageable, though we manually trigger it */
   position: absolute;
   width: 1px;
   height: 1px;
@@ -137,53 +141,54 @@ function formatSize(bytes) {
 }
 
 .tui-upload__icon {
-  color: var(--border);
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 1rem;
   line-height: 1.3;
-  margin-bottom: 16px;
+  margin-bottom: var(--sp-md);
 }
 
 .tui-upload__label {
   color: var(--text);
+  font-family: var(--font-mono);
   font-size: 1rem;
-  margin-bottom: 4px;
+  margin-bottom: var(--sp-xs);
 }
 
 .tui-upload__hint {
-  color: var(--text-dim);
+  color: var(--text-secondary);
   font-size: 0.85rem;
-  margin-bottom: 12px;
+  margin-bottom: var(--sp-md);
 }
 
 .tui-upload__formats,
 .tui-upload__maxsize {
-  color: var(--text-dim);
+  color: var(--text-secondary);
   font-size: 0.8rem;
   opacity: 0.7;
 }
 
-/* Done state */
+/* ── Done state ── */
 .tui-upload__done-icon {
-  color: var(--green);
-  font-size: 2rem;
-  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 2.5rem;
+  margin-bottom: var(--sp-sm);
 }
 
 .tui-upload__filename {
-  color: var(--green);
+  color: var(--accent-light);
   font-size: 1rem;
-  margin-bottom: 4px;
+  margin-bottom: var(--sp-xs);
   word-break: break-all;
 }
 
 .tui-upload__filesize {
-  color: var(--text-dim);
+  color: var(--text-secondary);
   font-size: 0.85rem;
-  margin-bottom: 8px;
+  margin-bottom: var(--sp-sm);
 }
 
 .tui-upload__change {
-  color: var(--text-dim);
+  color: var(--text-secondary);
   font-size: 0.8rem;
   opacity: 0.7;
 }

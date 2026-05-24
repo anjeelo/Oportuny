@@ -40,86 +40,95 @@ function handleClick(e) {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  border: 1px solid;
+  border: 2px solid transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
   white-space: nowrap;
   line-height: 1;
 }
 
-/* Sizes */
+/* ── Sizes ── */
 .tui-btn--sm {
   font-size: 0.8rem;
-  padding: 6px 12px;
+  padding: 8px 14px;
 }
 .tui-btn--md {
   font-size: 0.95rem;
-  padding: 10px 20px;
+  padding: 12px 24px;
 }
 .tui-btn--lg {
   font-size: 1.1rem;
-  padding: 14px 28px;
+  padding: 16px 32px;
 }
 
-/* Block */
+/* ── Block ── */
 .tui-btn--block {
   width: 100%;
 }
 
-/* Primary — red background */
+/* ── Primary ── */
 .tui-btn--primary {
-  background: var(--red);
+  background: var(--primary);
   color: #fff;
-  border-color: var(--red);
+  border-color: var(--primary);
 }
 .tui-btn--primary .tui-btn__bracket {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 .tui-btn--primary:hover:not(.tui-btn--disabled) {
-  background: var(--red-bright);
-  border-color: var(--red-bright);
+  background: var(--primary-muted);
+  border-color: var(--primary-muted);
+  transform: translateY(-1px);
+}
+.tui-btn--primary:active:not(.tui-btn--disabled) {
+  transform: translateY(0);
 }
 
-/* Secondary — blue outline */
+/* ── Secondary ── */
 .tui-btn--secondary {
   background: transparent;
-  color: var(--blue-bright);
-  border-color: var(--blue);
+  color: var(--info);
+  border: 2px solid var(--border-active);
 }
 .tui-btn--secondary .tui-btn__bracket {
-  color: var(--blue);
+  color: var(--border-active);
 }
 .tui-btn--secondary:hover:not(.tui-btn--disabled) {
-  background: var(--blue);
-  color: #fff;
+  background: var(--info-bg);
+  transform: translateY(-1px);
 }
-.tui-btn--secondary:hover:not(.tui-btn--disabled) .tui-btn__bracket {
-  color: rgba(255,255,255,0.7);
+.tui-btn--secondary:active:not(.tui-btn--disabled) {
+  transform: translateY(0);
 }
 
-/* Success — green outline */
+/* ── Success ── */
 .tui-btn--success {
   background: transparent;
-  color: var(--green);
-  border-color: var(--green-dark);
+  color: var(--accent);
+  border: 2px solid var(--accent-muted);
 }
 .tui-btn--success .tui-btn__bracket {
-  color: var(--green-dark);
+  color: var(--accent-muted);
 }
 .tui-btn--success:hover:not(.tui-btn--disabled) {
-  background: var(--green);
-  color: var(--bg);
+  background: var(--accent-bg);
+  transform: translateY(-1px);
 }
-.tui-btn--success:hover:not(.tui-btn--disabled) .tui-btn__bracket {
-  color: var(--bg);
+.tui-btn--success:active:not(.tui-btn--disabled) {
+  transform: translateY(0);
 }
 
-/* Disabled */
+/* ── Disabled ── */
 .tui-btn--disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 

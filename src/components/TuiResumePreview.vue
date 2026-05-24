@@ -1,12 +1,10 @@
 <template>
   <div class="resume-preview">
     <TuiBox title="CURRÍCULO GERADO" variant="highlight">
-      
+
       <!-- Personal Info -->
       <section class="section" aria-labelledby="resume-personal">
-        <h3 id="resume-personal" class="section-header">
-          <span aria-hidden="true">══ </span>DADOS PESSOAIS<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-personal" class="section-header">DADOS PESSOAIS</h3>
         <div class="field"><span class="field-label">Nome:</span> {{ data.name }}</div>
         <div class="field"><span class="field-label">Email:</span> {{ data.email }}</div>
         <div class="field" v-if="data.phone"><span class="field-label">Tel:</span> {{ data.phone }}</div>
@@ -15,41 +13,39 @@
 
       <!-- Summary -->
       <section class="section" v-if="data.summary" aria-labelledby="resume-summary">
-        <h3 id="resume-summary" class="section-header">
-          <span aria-hidden="true">══ </span>RESUMO PROFISSIONAL<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-summary" class="section-header">RESUMO PROFISSIONAL</h3>
         <div class="section-text">{{ data.summary }}</div>
       </section>
 
       <!-- Education -->
       <section class="section" v-if="data.education?.length" aria-labelledby="resume-edu">
-        <h3 id="resume-edu" class="section-header">
-          <span aria-hidden="true">══ </span>EDUCAÇÃO<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-edu" class="section-header">EDUCAÇÃO</h3>
         <div class="item" v-for="(edu, i) in data.education" :key="i">
           <div class="item-marker"><span aria-hidden="true">&gt; </span>{{ edu.degree }}</div>
           <div class="item-sub">  {{ edu.institution }} ({{ edu.period }})</div>
-          <div class="item-sub" v-if="edu.gpa">  Média: {{ edu.gpa }}</div>
+          <div class="item-sub item-grade" v-if="edu.gpa">  Média: <span :class="gradeClass(edu.gpa)">{{ edu.gpa }}</span></div>
         </div>
       </section>
 
       <!-- Skills -->
       <section class="section" v-if="data.skills?.length" aria-labelledby="resume-skills">
-        <h3 id="resume-skills" class="section-header">
-          <span aria-hidden="true">══ </span>HABILIDADES<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-skills" class="section-header">HABILIDADES</h3>
         <div class="skills-list" role="list">
-          <span class="skill-tag" v-for="(skill, i) in data.skills" :key="i" role="listitem">
-            <span aria-hidden="true">[</span>{{ skill }}<span aria-hidden="true">]</span>
+          <span
+            class="skill-tag"
+            v-for="(skill, i) in data.skills"
+            :key="i"
+            role="listitem"
+            :class="skillColorClass(i, data.skills.length)"
+          >
+            {{ skill }}
           </span>
         </div>
       </section>
 
       <!-- Projects -->
       <section class="section" v-if="data.projects?.length" aria-labelledby="resume-projects">
-        <h3 id="resume-projects" class="section-header">
-          <span aria-hidden="true">══ </span>PROJETOS<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-projects" class="section-header">PROJETOS</h3>
         <div class="item" v-for="(proj, i) in data.projects" :key="i">
           <div class="item-marker"><span aria-hidden="true">&gt; </span>{{ proj.name }}</div>
           <div class="item-sub">  {{ proj.description }}</div>
@@ -59,9 +55,7 @@
 
       <!-- Disciplines -->
       <section class="section" v-if="data.disciplines?.length" aria-labelledby="resume-disc">
-        <h3 id="resume-disc" class="section-header">
-          <span aria-hidden="true">══ </span>DISCIPLINAS RELEVANTES<span aria-hidden="true"> ══</span>
-        </h3>
+        <h3 id="resume-disc" class="section-header">DISCIPLINAS RELEVANTES</h3>
         <ul class="disciplines-grid">
           <li class="discipline" v-for="(disc, i) in data.disciplines" :key="i">
             <span class="disc-name">{{ disc.name }}</span>
@@ -72,7 +66,7 @@
           </li>
         </ul>
       </section>
-      
+
     </TuiBox>
   </div>
 </template>
@@ -89,6 +83,13 @@ function gradeClass(grade) {
   if (grade >= 7.0) return 'grade-mid'
   return 'grade-low'
 }
+
+function skillColorClass(index, total) {
+  const third = Math.ceil(total / 3)
+  if (index < third) return 'skill-accent'
+  if (index < third * 2) return 'skill-info'
+  return 'skill-warm'
+}
 </script>
 
 <style scoped>
@@ -99,7 +100,7 @@ function gradeClass(grade) {
 }
 
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .section:last-child {
@@ -107,63 +108,99 @@ function gradeClass(grade) {
 }
 
 .section-header {
-  color: var(--blue-bright);
+  color: var(--info);
   font-size: 0.9rem;
   letter-spacing: 0.1em;
-  margin-bottom: 10px;
+  margin-bottom: var(--sp-sm);
   text-transform: uppercase;
+  border-left: 3px solid var(--info);
+  padding-left: 12px;
 }
 
 .field {
-  margin-bottom: 2px;
+  margin-bottom: var(--sp-xs);
+  color: var(--text);
+  font-size: 0.9rem;
 }
 
 .field-label {
-  color: var(--text-dim);
+  color: var(--text-secondary);
 }
 
 .section-text {
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 0.9rem;
+  font-family: var(--font-body);
 }
 
 .item {
-  margin-bottom: 10px;
+  margin-bottom: var(--sp-sm);
 }
 
 .item-marker {
-  color: var(--green);
-}
-
-.item-sub {
-  color: var(--text-dim);
+  color: var(--text-bright);
   font-size: 0.9rem;
 }
 
-.item-tech {
-  color: var(--blue-bright);
+.item-marker span {
+  color: var(--accent);
+}
+
+.item-sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.item-grade {
   font-size: 0.85rem;
 }
 
+.item-tech {
+  color: var(--info);
+  font-size: 0.85rem;
+}
+
+/* ── Skills ─────────────────────────────────────────────── */
 .skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--sp-sm);
 }
 
 .skill-tag {
-  color: var(--green);
-  font-size: 0.85rem;
-  border: 1px solid var(--green-dark);
-  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
   display: inline-block;
+  transition: background var(--duration-fast);
 }
 
+.skill-accent {
+  color: var(--accent);
+  border-color: var(--accent-muted);
+  background: var(--accent-bg);
+}
+
+.skill-info {
+  color: var(--info);
+  border-color: var(--border-active);
+  background: var(--info-bg);
+}
+
+.skill-warm {
+  color: var(--warm);
+  border-color: rgba(212, 160, 83, 0.3);
+  background: var(--warm-bg);
+}
+
+/* ── Disciplines ────────────────────────────────────────── */
 .disciplines-grid {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sp-xs);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -184,9 +221,9 @@ function gradeClass(grade) {
 }
 
 .disc-dots {
-  color: var(--text-dim);
-  opacity: 0.3;
-  margin: 0 4px;
+  color: var(--text-muted);
+  opacity: 0.2;
+  margin: 0 var(--sp-xs);
   overflow: hidden;
   flex: 1;
 }
@@ -194,9 +231,22 @@ function gradeClass(grade) {
 .disc-grade {
   flex-shrink: 0;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.grade-high { color: var(--green); }
-.grade-mid { color: var(--blue-bright); }
-.grade-low { color: var(--red); }
+.grade-high { color: var(--accent); }
+.grade-mid  { color: var(--info); }
+.grade-low  { color: var(--primary); }
+
+/* ── Accessibility ──────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 </style>
