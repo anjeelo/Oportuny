@@ -401,3 +401,48 @@ label {
   html { font-size: 13px; }
   .container { padding: 0 12px; }
 }
+
+/* ── Accessibility Overrides ────────────────────────────── */
+html.large-font {
+  font-size: 18px;
+}
+
+html.high-contrast {
+  --bg:            #000000;
+  --bg-surface:    #000000;
+  --bg-elevated:   #000000;
+  --bg-input:      #000000;
+  --bg-hover:      #333333;
+  --bg-overlay:    rgba(0, 0, 0, 0.95);
+
+  --primary:       #cc0000;
+  --primary-hover: #ff0000;
+  --primary-muted: #990000;
+  --primary-bg:    rgba(204, 0, 0, 0.2);
+
+  --accent:        #0251c5;
+  --accent-light:  #3377ff;
+  --accent-muted:  #013a8c;
+  --accent-bg:     rgba(2, 81, 197, 0.2);
+
+  --info:          #0251c5;
+  --info-light:    #3377ff;
+  --info-bg:       rgba(2, 81, 197, 0.2);
+
+  --warm:          #ffff00;
+  --warm-light:    #ffff00;
+  --warm-bg:       rgba(255, 255, 0, 0.1);
+
+  --danger:        #cc0000;
+  --danger-light:  #ff0000;
+  --danger-bg:     rgba(204, 0, 0, 0.2);
+
+  --text:          #ffff00;
+  --text-secondary: #ffff00;
+  --text-muted:    #ffff00;
+  --text-bright:   #ffff00;
+
+  --border:        #0251c5;
+  --border-active: #ffff00;
+  --border-accent: #cc0000;
+}

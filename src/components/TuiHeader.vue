@@ -7,6 +7,12 @@
         </router-link>
 
         <div class="header-nav" :class="{ open: menuOpen }" id="main-nav">
+          <button class="nav-link btn-a11y" @click="toggleLargeFont" :aria-pressed="isLargeFont" aria-label="Aumentar fonte" title="Aumentar Fonte">
+            A+
+          </button>
+          <button class="nav-link btn-a11y" @click="toggleHighContrast" :aria-pressed="isHighContrast" aria-label="Alto contraste" title="Alto Contraste">
+            🌓
+          </button>
           <span class="separator" aria-hidden="true">│</span>
           <router-link to="/" class="nav-link" @click="menuOpen = false">HOME</router-link>
           <span class="separator" aria-hidden="true">│</span>
@@ -41,6 +47,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { isAuthenticated, logoutMock } from '../stores/auth'
+import { isLargeFont, isHighContrast, toggleLargeFont, toggleHighContrast } from '../stores/accessibility'
 
 const router = useRouter()
 const menuOpen = ref(false)
@@ -168,6 +175,19 @@ function handleLogout() {
 
 .btn-logout::after {
   background: var(--primary);
+}
+
+.btn-a11y {
+  color: var(--text);
+  font-weight: bold;
+}
+
+.btn-a11y[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.btn-a11y::after {
+  display: none !important;
 }
 
 .mobile-toggle {

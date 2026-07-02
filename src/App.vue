@@ -7,7 +7,23 @@
 </template>
 
 <script setup>
+import { watchEffect } from 'vue'
 import TuiHeader from './components/TuiHeader.vue'
+import { isLargeFont, isHighContrast } from './stores/accessibility'
+
+watchEffect(() => {
+  if (isLargeFont.value) {
+    document.documentElement.classList.add('large-font')
+  } else {
+    document.documentElement.classList.remove('large-font')
+  }
+  
+  if (isHighContrast.value) {
+    document.documentElement.classList.add('high-contrast')
+  } else {
+    document.documentElement.classList.remove('high-contrast')
+  }
+})
 </script>
 
 <style>
