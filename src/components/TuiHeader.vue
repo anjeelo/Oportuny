@@ -2,13 +2,13 @@
   <header class="tui-header">
     <div class="container header-container">
       <nav class="header-content" aria-label="Navegação principal">
-        <router-link to="/onboarding" class="header-logo" aria-label="Oportuni Home">
+        <router-link to="/" class="header-logo" aria-label="Oportuni Home">
           OPORTUNI
         </router-link>
 
         <div class="header-nav" :class="{ open: menuOpen }" id="main-nav">
           <span class="separator" aria-hidden="true">│</span>
-          <router-link to="/onboarding" class="nav-link" @click="menuOpen = false">HOME</router-link>
+          <router-link to="/" class="nav-link" @click="menuOpen = false">HOME</router-link>
           <span class="separator" aria-hidden="true">│</span>
           <router-link to="/vagas" class="nav-link" @click="menuOpen = false">VAGAS</router-link>
           <span class="separator" aria-hidden="true">│</span>

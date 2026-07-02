@@ -12,8 +12,7 @@ import VagasView from '../views/VagasView.vue'
 import LoginView from '../views/LoginView.vue'
 
 const routes = [
-  { path: '/', redirect: '/onboarding' },
-  { path: '/onboarding', name: 'Onboarding', component: OnboardingView },
+  { path: '/', name: 'Onboarding', component: OnboardingView },
   { path: '/questionario', name: 'Questionario', component: QuestionarioView, meta: { requiresAuth: true } },
   { path: '/questionario/boletim', name: 'BoletimUpload', component: BoletimUploadView, meta: { requiresAuth: true } },
   { path: '/questionario/curriculo', name: 'CurriculoUpload', component: CurriculoUploadView, meta: { requiresAuth: true } },
